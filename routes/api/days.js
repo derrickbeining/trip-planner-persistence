@@ -11,9 +11,7 @@ router.post('/', function (req, res, next) {
   Day.create({
     number: req.body.number
   })
-    .then(result => {
-      res.send('Day successfully created')
-    })
+    .then(res.json.bind(res))
     .catch(next)
 })
 

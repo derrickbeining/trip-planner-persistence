@@ -42,7 +42,9 @@ var tripModule = (function () {
   // before calling `addDay` or `deleteCurrentDay` that update the frontend (the UI), we need to make sure that it happened successfully on the server
   // ~~~~~~~~~~~~~~~~~~~~~~~
   $(function () {
-    $addButton.on('click', addDay);
+    $addButton.on('click', function () {
+      addDay();
+    });
     $removeButton.on('click', deleteCurrentDay);
   });
 
@@ -51,14 +53,31 @@ var tripModule = (function () {
   // ~~~~~~~~~~~~~~~~~~~~~~~
   // `addDay` may need to take information now that we can persist days -- we want to display what is being sent from the DB
   // ~~~~~~~~~~~~~~~~~~~~~~~
-  function addDay (dayData) {
-    if (this && this.blur) this.blur(); // removes focus box from buttons
-    var newDay = dayModule.create({ number: days.length + 1 }); // dayModule
+  function createDayAndDisplay (dayInstance) {
+    var newDay = dayModule.create(dayInstance); // dayModule
     days.push(newDay);
     if (days.length === 1) {
       currentDay = newDay;
     }
     switchTo(newDay);
+  }
+
+  function addDay (dayData) {
+    if (this && this.blur) this.blur(); // removes focus box from buttons
+    if (dayData) {
+      createDayAndDisplay(dayData)
+    } else {
+      $.post('/api/days', { number: days.length + 1 })
+        .then(dayInstance => {
+          createDayAndDisplay(dayInstance)
+          console.log('Day created'); //FIXME:
+
+        })
+        .catch(reason => {
+          console.error(reason)
+          alert('Day was not successfully created, try again.')
+        })
+    }
   }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~
@@ -68,15 +87,22 @@ var tripModule = (function () {
     // prevent deleting last day
     if (days.length < 2 || !currentDay) return;
     // remove from the collection
-    var index = days.indexOf(currentDay),
-      previousDay = days.splice(index, 1)[ 0 ],
-      newCurrent = days[ index ] || days[ index - 1 ];
-    // fix the remaining day numbers
-    days.forEach(function (day, i) {
-      day.setNumber(i + 1);
-    });
-    switchTo(newCurrent);
-    previousDay.hideButton();
+    const index = days.indexOf(currentDay)
+
+    $.ajax('/api/days/' + (index + 1))
+      .then(result => {
+        const previousDay = days.splice(index, 1)[ 0 ]
+        const newCurrent = days[ index ] || days[ index - 1 ]
+        // fix the remaining day numbers
+        days.forEach(function (day, i) {
+          day.setNumber(i + 1);
+        });
+        switchTo(newCurrent);
+        previousDay.hideButton();
+      })
+      .catch(reason => {
+        alert('Day deletion unsuccessful; try again. \n Reason:', reason)
+      })
   }
 
   // globally accessible module methods
@@ -88,12 +114,10 @@ var tripModule = (function () {
       // ~~~~~~~~~~~~~~~~~~~~~~~
       //If we are trying to load existing Days, then let's make a request to the server for the day. Remember this is async. For each day we get back what do we need to do to it?
       // ~~~~~~~~~~~~~~~~~~~~~~~
-      $.ajax({
-        method: 'GET',
-        url: '/api/days'
-      }).then(days => {
-        days.forEach(addDay, );
-      })
+      $.get('/api/days')
+        .then(days => {
+          days.forEach(addDay);
+        })
     },
 
     switchTo: switchTo,

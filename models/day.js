@@ -11,7 +11,21 @@ var Day = db.define('day', {
     type: Sequelize.INTEGER,
     unique: true,
   }
-});
+},
+  {
+    afterDestroy: function (instance) {
+      const destroyedNumber = instance.number
+      Day.findAll({
+        where: { number: { $gt: destroyedNumber } }
+      })
+        .then(days => {
+          days.forEach(day => {
+            day.decrement('number', { by: 1 })
+          })
+        })
+        .catch(console.error.bind(console))
+    }
+  });
 
 
 module.exports = Day;
