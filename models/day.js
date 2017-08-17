@@ -7,7 +7,10 @@ var Activity = require('./activity');
 
 
 var Day = db.define('day', {
-  name: Sequelize.INTEGER,
+  number: {
+    type: Sequelize.INTEGER,
+    unique: true,
+  }
 });
 
 

@@ -1,21 +1,25 @@
 var router = require('express').Router();
-var dayModel = require('../../models/day')
+var Day = require('../../models/day')
 
 router.get('/', function (req, res, next) {
-  dayModel.findAll()
+  Day.findAll()
     .then(res.json.bind(res))
     .catch(next)
 })
 
-router.post('/', function(req, res, next){
-  Day.create()
-  .then()
-  .catch(next)
+router.post('/', function (req, res, next) {
+  Day.create({
+    number: req.body.number
+  })
+    .then(result => {
+      res.send('Day successfully created')
+    })
+    .catch(next)
 })
 
 router.route('/:id')
   .get(function (req, res, next) {
-    dayModel.findOne({
+    Day.findOne({
       where: {
         id: req.params.id
       }
@@ -24,7 +28,7 @@ router.route('/:id')
       .catch(next)
   })
   .delete(function (req, res, next) {
-    dayModel.destroy({
+    Day.destroy({
       where: {
         id: req.params.id
       }
@@ -33,11 +37,9 @@ router.route('/:id')
       .catch(next)
   })
 
-
-
-  router.route('/:id/hotels')
+router.route('/:id/hotels')
   .get(function (req, res, next) {
-    dayModel.findOne({
+    Day.findOne({
       where: {
         id: req.params.id
       }
@@ -46,7 +48,7 @@ router.route('/:id')
       .catch(next)
   })
   .delete(function (req, res, next) {
-    dayModel.destroy({
+    Day.destroy({
       where: {
         id: req.params.id
       }
@@ -55,9 +57,9 @@ router.route('/:id')
       .catch(next)
   })
 
-  router.route('/:id/restaurants')
+router.route('/:id/restaurants')
   .get(function (req, res, next) {
-    dayModel.findOne({
+    Day.findOne({
       where: {
         id: req.params.id
       }
@@ -66,7 +68,7 @@ router.route('/:id')
       .catch(next)
   })
   .delete(function (req, res, next) {
-    dayModel.destroy({
+    Day.destroy({
       where: {
         id: req.params.id
       }
@@ -74,9 +76,10 @@ router.route('/:id')
       .then() // comment - deleted
       .catch(next)
   })
-  router.route('/:id/activities')
+
+router.route('/:id/activities')
   .get(function (req, res, next) {
-    dayModel.findOne({
+    Day.findOne({
       where: {
         id: req.params.id
       }
@@ -85,7 +88,7 @@ router.route('/:id')
       .catch(next)
   })
   .delete(function (req, res, next) {
-    dayModel.destroy({
+    Day.destroy({
       where: {
         id: req.params.id
       }

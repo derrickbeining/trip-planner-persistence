@@ -1,5 +1,5 @@
 'use strict';
-/* global $ tripModule attractionsModule hotels restaurants activities */
+/* global $ tripModule dayModule attractionsModule hotels restaurants activities */
 
 /**
  * This module fills the `select` tags with `option`s.
@@ -47,6 +47,7 @@ $(function () {
     activities.forEach(makeOption, $activitySelect);
     attractionsModule.loadEnhancedAttractions('activities', activities);
   })
+
 
 
   // Once you've made AJAX calls to retrieve this information,
