@@ -1,5 +1,10 @@
-var Promise = require('bluebird');
 var router = require('express').Router();
-var activityModel = ('../../models/activity')
+var activityModel = require('../../models/activity')
 
- module.exports = router;
+router.get('/', function (req, res, next) {
+  activityModel.findAll()
+    .then(res.json.bind(res))
+    .catch(next)
+})
+
+module.exports = router;
