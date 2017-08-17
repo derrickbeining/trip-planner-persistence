@@ -1,8 +1,4 @@
-{% extends 'layout.html' %}
-
-{% block title %}Your Trip{% endblock %}
-
-{% block content %}
+{% extends 'layout.html' %} {% block title %}Your Trip{% endblock %} {% block content %}
 <div id="app" class="clearfix">
   <div class="map-container col-sm-8 col-lg-9">
     <div>
@@ -38,7 +34,7 @@
       <h3>
         <span id="day-title">
           <span>Day not yet Loaded</span>
-          <button class="btn btn-xs btn-danger remove btn-circle">x</button>
+        <button class="btn btn-xs btn-danger remove btn-circle">x</button>
         </span>
       </h3>
       <div class="panel panel-default">
@@ -83,9 +79,9 @@
 </div>
 <!-- You are going to want to remove this entire script tag and replace it with AJAX requests. `options.js` is a great place to look for that. Do note that `options.js` loading will be asynchronous now -->
 <!-- How are requests currently being made? When we are looking for the index.html, it is rendered from our server and given a couple of objects, `templateHotels` is one of them -->
-<script>
+<!-- <script>
   var hotels = {{ templateHotels | dump | safe }};
   var restaurants = {{ templateRestaurants | dump | safe }};
   var activities = {{ templateActivities | dump | safe }};
-</script>
+</script> -->
 {% endblock %}
