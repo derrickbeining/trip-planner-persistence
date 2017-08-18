@@ -69,8 +69,8 @@ var tripModule = (function () {
     } else {
       $.post('/api/days', { number: days.length + 1 })
         .then(dayInstance => {
-          createDayAndDisplay(dayInstance)
-          console.log('Day created'); //FIXME:
+          console.log('Day created: ', dayInstance); //FIXME:
+          return createDayAndDisplay(dayInstance)
 
         })
         .catch(reason => {
@@ -89,8 +89,12 @@ var tripModule = (function () {
     // remove from the collection
     const index = days.indexOf(currentDay)
 
-    $.ajax('/api/days/' + (index + 1))
-      .then(result => {
+    $.ajax({
+      url: '/api/days/' + (currentDay.id),
+      method: 'DELETE'
+    })
+      .then((deletedDay) => {
+        console.log('Deleted day: ', deletedDay) //FIXME: for debugging
         const previousDay = days.splice(index, 1)[ 0 ]
         const newCurrent = days[ index ] || days[ index - 1 ]
         // fix the remaining day numbers
@@ -101,7 +105,7 @@ var tripModule = (function () {
         previousDay.hideButton();
       })
       .catch(reason => {
-        alert('Day deletion unsuccessful; try again. \n Reason:', reason)
+        alert('Day deletion unsuccessful; try again.\nReason:', reason)
       })
   }
 

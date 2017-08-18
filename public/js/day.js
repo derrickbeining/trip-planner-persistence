@@ -24,8 +24,8 @@ var dayModule = (function () {
   });
 
   // ~~~~~~~~~~~~~~~~~~~~~~~
-    // If you follow the logic of `attractionsModule.getEnhanced` (try following it!), you will note that it depends on `loadEnhanceAttractions` to have run.
-    //Note that `loadEnhancedAttractions` is already being called for you in `/public/js/options.js` and that it utilizes another method given to us by the `attractionModule` (singular). 
+  // If you follow the logic of `attractionsModule.getEnhanced` (try following it!), you will note that it depends on `loadEnhanceAttractions` to have run.
+  //Note that `loadEnhancedAttractions` is already being called for you in `/public/js/options.js` and that it utilizes another method given to us by the `attractionModule` (singular).
   // ~~~~~~~~~~~~~~~~~~~~~~~
   function Day (data) {
     // for brand-new days
@@ -53,7 +53,7 @@ var dayModule = (function () {
     this.$button = $('<button class="btn btn-circle day-btn"></button>')
       .text(this.number);
     var self = this;
-    this.$button.on('click', function (){
+    this.$button.on('click', function () {
       this.blur(); // removes focus box from buttons
       tripModule.switchTo(self);
     });
@@ -94,8 +94,8 @@ var dayModule = (function () {
 
 
   // ~~~~~~~~~~~~~~~~~~~~~~~
-    // Do not add an attraction to the page until you have added it to the DB.
-    // es6 template literals might be helpful for the url route path for your AJAX request
+  // Do not add an attraction to the page until you have added it to the DB.
+  // es6 template literals might be helpful for the url route path for your AJAX request
   // ~~~~~~~~~~~~~~~~~~~~~~~
   Day.prototype.addAttraction = function (attraction) {
     // adding to the day object
@@ -116,10 +116,21 @@ var dayModule = (function () {
     attraction.show();
   };
 
+  Day.prototype.ajaxPUTAttraction = function (attraction) {
+    let type = attraction.type
+    switch (type) {
+      case 'hotels'
+    }
+    $.ajax({
+      url: '/api/' + attraction.type,
+      method: 'PUT'
+    })
+  }
+
 
   // ~~~~~~~~~~~~~~~~~~~~~~~
-    // Do not remove an attraction until you have removed it from the DB
-    // es6 template literals might be helpful for the url route path for your AJAX request
+  // Do not remove an attraction until you have removed it from the DB
+  // es6 template literals might be helpful for the url route path for your AJAX request
   // ~~~~~~~~~~~~~~~~~~~~~~~
   Day.prototype.removeAttraction = function (attraction) {
     // removing from the day object

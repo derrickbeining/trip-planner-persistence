@@ -23,31 +23,42 @@ $(function () {
 
   // make all the option tags (second arg of `forEach` is a `this` binding)
 
-  $.ajax({
-    method: 'GET',
-    url: '/api/hotels'
-  }).then(hotels => {
-    hotels.forEach(makeOption, $hotelSelect);
-    attractionsModule.loadEnhancedAttractions('hotels', hotels);
-  })
+  // $.ajax({
+  //   method: 'GET',
+  //   url: '/api/hotels'
+  // }).then(hotels => {
+  //   hotels.forEach(makeOption, $hotelSelect);
+  //   attractionsModule.loadEnhancedAttractions('hotels', hotels);
+  // })
+
+  // $.ajax({
+  //   method: 'GET',
+  //   url: '/api/restaurants'
+  // }).then(restaurants => {
+  //   restaurants.forEach(makeOption, $restaurantSelect);
+  //   attractionsModule.loadEnhancedAttractions('restaurants', restaurants);
+
+  // })
+
+  // $.ajax({
+  //   method: 'GET',
+  //   url: '/api/activities'
+  // }).then(activities => {
+  //   activities.forEach(makeOption, $activitySelect);
+  //   attractionsModule.loadEnhancedAttractions('activities', activities);
+  // })
 
   $.ajax({
     method: 'GET',
-    url: '/api/restaurants'
-  }).then(restaurants => {
-    restaurants.forEach(makeOption, $restaurantSelect);
-    attractionsModule.loadEnhancedAttractions('restaurants', restaurants);
-
+    url: '/options'
+  }).then(attractions => {
+    attractions.hotels.forEach(makeOption, $hotelSelect);
+    attractions.restaurants.forEach(makeOption, $restaurantSelect);
+    attractions.activities.forEach(makeOption, $activitySelect);
+    attractionsModule.loadEnhancedAttractions('hotels', attractions.hotels);
+    attractionsModule.loadEnhancedAttractions('restaurants', attractions.restaurants);
+    attractionsModule.loadEnhancedAttractions('activities', attractions.activities);
   })
-
-  $.ajax({
-    method: 'GET',
-    url: '/api/activities'
-  }).then(activities => {
-    activities.forEach(makeOption, $activitySelect);
-    attractionsModule.loadEnhancedAttractions('activities', activities);
-  })
-
 
 
   // Once you've made AJAX calls to retrieve this information,

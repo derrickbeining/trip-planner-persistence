@@ -5,23 +5,25 @@ var Restaurant = require('../models').Restaurant;
 var Activity = require('../models').Activity;
 var apiRouter = require('./api');
 
+router.use('/api', apiRouter)
+
 router.get('/', function (req, res, next) {
   res.render('index')
-  // Promise.all([
-  //   Hotel.findAll(),
-  //   Restaurant.findAll(),
-  //   Activity.findAll()
-  // ])
-  // .spread(function(dbHotels, dbRestaurants, dbActivities) {
-  //   res.render('index', {
-  //     templateHotels: dbHotels,
-  //     templateRestaurants: dbRestaurants,
-  //     templateActivities: dbActivities
-  //   });
-  // })
-  // .catch(next);
 });
 
-router.use('/api', apiRouter)
+router.get('/options', function (req, res, next) {
+  Promise.all([
+    Hotel.findAll(),
+    Restaurant.findAll(),
+    Activity.findAll()
+  ])
+    .then(([ hotels, restaurants, activities ]) => {
+      res.send({
+        hotels,
+        restaurants,
+        activities
+      })
+    })
+})
 
 module.exports = router;

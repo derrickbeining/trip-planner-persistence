@@ -1,3 +1,4 @@
+var Promise = require('bluebird');
 var router = require('express').Router();
 var Day = require('../../models/day')
 
@@ -26,12 +27,15 @@ router.route('/:id')
       .catch(next)
   })
   .delete(function (req, res, next) {
-    Day.destroy({
-      where: {
-        id: req.params.id
-      }
-    })
-      .then() // comment - deleted
+    // Day.findOne({ where: { id: req.params.id } })
+    //   .then(day => {
+    //     return day.destroy()
+    //   })
+    Day.destroyById(Number(req.params.id))
+      .then((deletedDay) => {
+        res.send(deletedDay) //FIXME: remove after debug
+        // res.sendStatus(204)
+      })
       .catch(next)
   })
 

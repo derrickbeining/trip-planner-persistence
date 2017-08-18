@@ -1,3 +1,4 @@
+var Promise = require('bluebird');
 var router = require('express').Router();
 var activityModel = require('../../models/activity')
 
